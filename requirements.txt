@@ -1,0 +1,5 @@
+django
+gunicorn
+django-heroku
+sympy == 1.4
+psycopg2 == 2.8.4
