@@ -31,10 +31,10 @@ function validateLogin(){
 	var textarea = document.getElementById('textarea');
 	//alert("whet: " + getSemiColonons());
 	if(getSemiColonons() > 1){
-		alert("not subnitted");
+		//alert("not subnitted");
 		return false;
 	}else{
-		alert("submitted");
+		//alert("submitted");
 	}
 }
 
