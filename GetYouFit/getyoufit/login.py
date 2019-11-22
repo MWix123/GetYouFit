@@ -1,10 +1,10 @@
 import psycopg2
 
 
-dbName = "GetYouFit"
-dbHost = "localhost"
-dbUser = "getyoufit"
-dbPassword = "test123"
+dbName = "dcjdhd0n3ngqo0"
+dbHost = "ec2-54-225-173-42.compute-1.amazonaws.com"
+dbUser = "asfmhdygmsibfb"
+dbPassword = "d57768a0ac5b6f7313d2173a9b8179443465c3515448f2b6b11d806a7a11047b"
 
 def login(info):
 	info = info.split(";")
