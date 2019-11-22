@@ -18,7 +18,10 @@ def login(info):
 		#print("Connected")
 
 		cursor = conn.cursor()
-
+	
+		cursor.execute("CREATE TABLE users VALUES(username VARCHAR(50) PRIMARY KEY, password VARCHAR(100) NOT NULL, age INT, height FLOAT, weight FLOAT, gender CHAR(1))")
+		returnString= "Table created"
+		"""
 		cursor.execute("SELECT * FROM users WHERE username = '" + username + "'")
 		rows = cursor.fetchall()
 		#print(cursor.rowcount)	
@@ -26,6 +29,7 @@ def login(info):
 			returnString = "logged in"
 		else:
 			returnString += " username: " + username + " password: " + password
+		"""
 	except Exception as ex:
 		returnString += ": " + type(ex).__name__
 		print("Not connected: " + type(ex).__name__)
