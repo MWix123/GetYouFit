@@ -24,7 +24,10 @@ def login(info):
 		#print(cursor.rowcount)	
 		if cursor.rowcount > 0:
 			returnString = "logged in"
+		else:
+			returnString += " username: " + username + " password: " + password
 	except Exception as ex:
+		returnString += ": " + type(ex).__name__
 		print("Not connected: " + type(ex).__name__)
 
 	return returnString
