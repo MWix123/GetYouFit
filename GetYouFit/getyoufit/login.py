@@ -19,7 +19,7 @@ def login(info):
 
 		cursor = conn.cursor()
 	
-		cursor.execute("CREATE TABLE users VALUES(username VARCHAR(50) PRIMARY KEY, password VARCHAR(100) NOT NULL, age INT, height FLOAT, weight FLOAT, gender CHAR(1))")
+		cursor.execute("CREATE TABLE users (username VARCHAR(50) PRIMARY KEY, pword VARCHAR(100) NOT NULL, age INT, height FLOAT, weight FLOAT, gender CHAR(1))")
 		returnString= "Table created"
 		"""
 		cursor.execute("SELECT * FROM users WHERE username = '" + username + "'")
