@@ -9,13 +9,24 @@ from .login import *
 
 def index(request):
 	formattedEquation = ""
+	
 	if request.method == "POST":
-		print("test")
 		loginForm = LoginForm(request.POST)
 		if loginForm.is_valid():
-			formattedEquation = login(loginForm.cleaned_data["textarea"])
-		else:
-			formattedEquation = "almost"
+			formattedEquation = createUser(loginForm.cleaned_data["textarea"])
 	else:
 		loginForm = LoginForm()
 	return render(request, "index.html", {"form": loginForm, "formattedEquation": formattedEquation})
+
+def login(request):
+	formattedEquation = ""
+
+	if request.method == "POST":
+		loginForm = LoginForm(request.POST)
+		if loginForm.is_valid():
+			formattedEquation = loginUser(loginForm.cleaned_data["textarea"])
+	else:
+		loginForm = LoginForm()
+
+
+	return render(request, "login.html", {"form": loginForm, "formattedEquation": formattedEquation})

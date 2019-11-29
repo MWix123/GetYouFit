@@ -10,7 +10,7 @@ body{
 	background-attachment:fixed;
 	background-size:cover;
 	font-size:16px;
-	font-family: 'Lato', serif;
+	font-family: 'Lato', sans-serif;
 }
 
 .main{
@@ -21,12 +21,24 @@ body{
 	border:6px solid #aa5000;
 }
 
+.main h2{
+	text-align: center;
+	color: #aa5000;
+    font-weight: bold;
+    font-size: 2em;
+}
+
 header h1{
-	text-align:center;
-	font-size:3em;
-	color:#aa5000;
-	font-family:'Nunito', sans-serif;
-	font-weight:bold;
+	font-size: 3em;
+    color: #ffe9d6;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    background: #aa5000;
+    width: fit-content;
+    display: block;
+    margin: 0 auto 20px auto;
+    padding: 30px;
+    border-radius: 100%;
 }
 
 #dashboard{
@@ -36,22 +48,34 @@ header h1{
 #login-form{
 	display:block;
 	margin:auto;
+	text-align: center;
+	padding: 15px 0;
+}
+
+.form-row{
+	padding:10px 0;
 }
 
 #login-button{
 	display: block;
     margin: 30px auto;
-    background-color: #666600;
+    background-color: #aa5000;
     color: white;
     font-size: 1em;
     padding: 15px;
-    border-radius: 5px;
-    border: 2px solid #003300;
-    width: max-content;
+    border: 3px solid #663000;
 }
 
 #login-button:hover{
+	background-color: #853e00;
+	color:yellow;
 	cursor:pointer;
+	transition: 0.2s linear background;
+}
+
+#login-button:active{
+	background-color: #ffad66;
+	transition: none;
 }
 
 #login-form > p{

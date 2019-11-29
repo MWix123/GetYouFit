@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Latoe&display=swap" rel="stylesheet">
+	
+	{% load static %}
+
+	<link href="{% static 'css/main.css' %}" rel="stylesheet">
+	<script type="text/javascript" src="{% static 'scripts/init.js' %}"></script>
+</head>
+<body id="body">
+	<div class="main">
+        {% include "header.html" %}
+        <h2>Log In</h2>
+		<section>
+			<form id="login-form" method="post">
+				{% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-row">
+				    <label>Username: </label><input type="text" name="username" id="username" onkeyup="updateForm(this)"/>
+                </div>
+                <div class="form-row">
+                    <label>Password:&nbsp; </label><input type="password" name="password" id="password" onkeyup="updateForm(this)">
+                </div>
+                <input class="submit-button" id="login-button" type="submit" value="Submit" onclick="return validateLogin();" onsubmit="return validateLogin()"/>
+				<p id="login-error-message"></p>
+			</form>
+
+		</section>
+		<div id="dashboard">
+			{{ formattedEquation }}
+		</div>
+	</div>
+</body>
+</html>
