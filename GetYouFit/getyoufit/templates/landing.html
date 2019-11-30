@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Latoe&display=swap" rel="stylesheet">
+	
+    {% load static %}
+    
+
+	<link href="{% static 'css/main.css' %}" rel="stylesheet">
+	<script type="text/javascript" src="{% static 'scripts/init.js' %}"></script>
+</head>
+<body id="body">
+    {% include "nav.html" %}
+	<div class="main">
+		{% include "header.html" %}
+		<h2>Home page</h2>
+		<section>
+			<p>Test</p>
+		</section>
+		<div id="dashboard">
+			
+		</div>
+	</div>
+</body>
+</html>

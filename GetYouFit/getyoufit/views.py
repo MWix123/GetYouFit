@@ -1,32 +1,36 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .forms import LoginForm
+from .forms import UserRegistrationForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 from .login import *
 
+@login_required
 def index(request):
-	formattedEquation = ""
+	message = ""
+	return render(request, "index.html", {"message": message})
+
+def signup(request):
+	message = ""
 	
-	if request.method == "POST":
-		loginForm = LoginForm(request.POST)
-		if loginForm.is_valid():
-			formattedEquation = createUser(loginForm.cleaned_data["textarea"])
-	else:
-		loginForm = LoginForm()
-	return render(request, "index.html", {"form": loginForm, "formattedEquation": formattedEquation})
-
-def login(request):
-	formattedEquation = ""
+	if request.user.is_authenticated:
+		return redirect('index')
 
 	if request.method == "POST":
-		loginForm = LoginForm(request.POST)
-		if loginForm.is_valid():
-			formattedEquation = loginUser(loginForm.cleaned_data["textarea"])
+		form = UserRegistrationForm(request.POST)
+		if form.is_valid():
+			result = createUser(form.cleaned_data)
+			
+			if result[0]:
+				form.save()
+				return redirect('index')
+			else:
+				message = result[1]
 	else:
-		loginForm = LoginForm()
+		form = UserRegistrationForm()
+	return render(request, "signup.html", {"form": form, "message": message})
 
-
-	return render(request, "login.html", {"form": loginForm, "formattedEquation": formattedEquation})

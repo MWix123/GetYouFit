@@ -13,9 +13,41 @@ body{
 	font-family: 'Lato', sans-serif;
 }
 
+/* Navigation */
+nav{
+	position: fixed;
+	top:0;
+	left:0;
+	width: 100%;
+	background-color: #aa5000;
+	padding: 15px 25px;
+}
+
+nav ul li{
+	display:inline;
+}
+
+nav a{
+	color: rgba(255,255,255,0.8);
+	text-decoration: none;
+	padding:15px 10px;
+}
+
+nav a:hover{
+	color:white;
+	text-shadow:0 0 2px white;
+	cursor:pointer;
+	transition: 0.2s linear color;
+}
+
+.right-nav{
+	position: fixed;
+	right: 30px;
+}
+
 .main{
 	padding:25px;
-	margin:30px;
+	margin:70px 30px;
 	background-color:#ffeecf;
 	border-radius:5px;
 	border:6px solid #aa5000;
@@ -26,6 +58,16 @@ body{
 	color: #aa5000;
     font-weight: bold;
     font-size: 2em;
+}
+
+.main a{
+	color:blue;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.main a:hover{
+	text-decoration: underline;
 }
 
 header h1{
@@ -70,7 +112,7 @@ header h1{
 	background-color: #853e00;
 	color:yellow;
 	cursor:pointer;
-	transition: 0.2s linear background;
+	transition: 0.2s linear color, 0.2s linear background;
 }
 
 #login-button:active{
@@ -78,11 +120,79 @@ header h1{
 	transition: none;
 }
 
+#login-form > p, #login-form > ul{
+	display: block;
+	margin: auto;
+	text-align: left;
+	width:75%;
+	color: #aa5000;
+	padding:5px 0;
+}
+
 #login-form > p{
+	line-height: 2;
+	font-size: 1.1em;
+}
+
+#login-form > p:nth-child(2):after{
+	content: 'Required field. Letters, digits and punctuation only';
+}
+
+#login-form > p:nth-child(8):after{
+	content: ' feet';
+}
+
+#login-form > p:nth-child(9){
+	text-indent: 6%;
+}
+
+#login-form > p:nth-child(9):after{
+	content: ' inches';
+}
+
+#login-form > p:nth-child(10):after{
+	content: ' lbs';
+}
+
+#login-form > ul{
+	list-style-position: inside;
+	text-indent: 3em;
+	line-height: 1.5;
+}
+
+#login-form > ul:nth-child(4) li:nth-child(1){
 	display: none;
+}
+
+#login-form > ul:nth-child(6){
+	color: red;
+	font-weight: bold;
+}
+
+#login-form select{
+	padding:5px;
+	font-size: 0.85em;
+	background-color: white;
 }
 
 #login-error-message{
 	display:block !important;
 	color:red;
+}
+
+span.helptext{
+	font-size: 0.9em;
+}
+
+span.helptext:nth-child(3){
+	display: none;
+}
+
+input[type="text"], input[type="password"], input[type="number"]{
+	padding: 5px;
+	font-size:0.85em;
+}
+
+input#id_height1:after{
+	content:' Downlaod';
 }

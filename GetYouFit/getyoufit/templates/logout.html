@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Latoe&display=swap" rel="stylesheet">
+	
+    {% load static %}
+    
+
+	<link href="{% static 'css/main.css' %}" rel="stylesheet">
+	<script type="text/javascript" src="{% static 'scripts/init.js' %}"></script>
+</head>
+<body id="body">
+    {% include "nav.html" %}
+	<div class="main">
+		{% include "header.html" %}
+        <h2>You have been logged out.</h2>
+        <br />
+		<p style="text-align: center;"><a href="login">Click here to login</a></p>
+	</div>
+</body>
+</html>

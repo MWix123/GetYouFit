@@ -36,26 +36,39 @@ def loginUser(info):
 
 
 def createUser(info):
-	info = info.split(";")
-	username = info[0]
-	password = info[1]
 
-	returnString = "Not logged in"
-
+	returnString = "Error, unable to create new user"
+	isValid = False
+	
 	try:
 		conn = psycopg2.connect(database=dbName, password = dbPassword, user=dbUser, host=dbHost)
 
 		cursor = conn.cursor()
 		
-		cursor.execute("INSERT INTO users(username, pword) VALUES('" + username + "', '" + password + "')")
+
+		age = 0
+		if info['age'] != None:
+			age = info['age']
+
+		height = 0
+		if info['height1'] != None and info['height2'] != None:
+			height = info['height1']*12 + info['height2']
+
+		weight = 0
+		if info['weight'] != None:
+			weight = info['weight']
+		
+		gender = info['gender']
+		
+		cursor.execute("INSERT INTO users(username, pword, age, height, weight, gender) VALUES('" + info['username'] + "', '" + info['password1'] + "', " + str(age) + ", " + str(height) + ", " + str(weight) + ", '" + gender + "')")
 		
 		conn.commit()
 
 		returnString = "New user sucessfully created"
+		isValid = True
 	except Exception as ex:
-		if type(ex).__name__ == "UniqueViolation":
-			return "Username already taken"
-		returnString += ": " + type(ex).__name__
 		print("Not connected: " + type(ex).__name__)
+		if type(ex).__name__ == "UniqueViolation":
+			returnString = "Username already taken"
 
-	return returnString
+	return [isValid, returnString]

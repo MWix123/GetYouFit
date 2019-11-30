@@ -4,33 +4,40 @@
 	<link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Latoe&display=swap" rel="stylesheet">
 	
-	{% load static %}
+    {% load static %}
+    
+	<style>
+        #login-form > p:nth-child(2):after{
+            content: '' !important;
+        }
+
+        #login-form > p{
+            text-align: center !important;
+        }
+    </style>
 
 	<link href="{% static 'css/main.css' %}" rel="stylesheet">
 	<script type="text/javascript" src="{% static 'scripts/init.js' %}"></script>
 </head>
 <body id="body">
+    {% include "nav.html" %}
 	<div class="main">
         {% include "header.html" %}
         <h2>Log In</h2>
-		<section>
-			<form id="login-form" method="post">
-				{% csrf_token %}
-                {{ form.as_p }}
-                <div class="form-row">
-				    <label>Username: </label><input type="text" name="username" id="username" onkeyup="updateForm(this)"/>
-                </div>
-                <div class="form-row">
-                    <label>Password:&nbsp; </label><input type="password" name="password" id="password" onkeyup="updateForm(this)">
-                </div>
-                <input class="submit-button" id="login-button" type="submit" value="Submit" onclick="return validateLogin();" onsubmit="return validateLogin()"/>
-				<p id="login-error-message"></p>
-			</form>
-
-		</section>
-		<div id="dashboard">
-			{{ formattedEquation }}
-		</div>
+        {% if user.is_authenticated %}
+            <br />
+            <p style="text-align: center;">You are already logged in</p>
+        {% else %}
+            <section>
+                <form id="login-form" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="submit-button" id="login-button" type="submit" value="Submit" />
+                    <p id="login-error-message"></p>
+                    <p>New user? <a href="{% url 'signup' %}">Click here to join</a></p>
+                </form>
+            </section>
+        {% endif %}
 	</div>
 </body>
 </html>
