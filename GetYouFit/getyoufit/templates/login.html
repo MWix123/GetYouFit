@@ -26,7 +26,7 @@
         <h2>Log In</h2>
         {% if user.is_authenticated %}
             <br />
-            <p style="text-align: center;">You are already logged in</p>
+            <p class="message">You are already logged in</p>
         {% else %}
             <section>
                 <form id="login-form" method="post">

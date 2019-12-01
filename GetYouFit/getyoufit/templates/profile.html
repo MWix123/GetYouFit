@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Latoe&display=swap" rel="stylesheet">
+	
+    {% load static %}
+    
+    <style>
+        #login-form > p{
+            display: flex !important;
+            margin: auto;
+            text-align: right;
+            width: 25% !important;
+            color: #aa5000;
+            padding: 5px 0;
+            justify-content: space-between;
+            position:relative;
+        }
+
+        span.helptext{
+            position: absolute;
+            right: -3.5em;
+        }
+
+        #id_username{
+            pointer-events: none;
+            background: none;
+            border:none;
+            font-weight: bold;
+            padding: 0;
+            text-align: right;
+        }
+    </style>
+
+	<link href="{% static 'css/main.css' %}" rel="stylesheet">
+	<script type="text/javascript" src="{% static 'scripts/init.js' %}"></script>
+</head>
+<body id="body">
+	{% include "nav.html" %}
+	<div class="main">
+		{% include "header.html" %}
+        <h2>Profile</h2>
+		<form id="login-form" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="submit-button" id="login-button" type="submit" value="Update Profile" />
+            <p id="login-error-message"></p>
+        </form>
+        <p class="message">{{ message }}</p>
+	</div>
+</body>
+</html>

@@ -134,24 +134,8 @@ header h1{
 	font-size: 1.1em;
 }
 
-#login-form > p:nth-child(2):after{
-	content: 'Required field. Letters, digits and punctuation only';
-}
-
-#login-form > p:nth-child(8):after{
-	content: ' feet';
-}
-
 #login-form > p:nth-child(9){
 	text-indent: 6%;
-}
-
-#login-form > p:nth-child(9):after{
-	content: ' inches';
-}
-
-#login-form > p:nth-child(10):after{
-	content: ' lbs';
 }
 
 #login-form > ul{
@@ -184,15 +168,56 @@ span.helptext{
 	font-size: 0.9em;
 }
 
-span.helptext:nth-child(3){
-	display: none;
-}
-
 input[type="text"], input[type="password"], input[type="number"]{
 	padding: 5px;
 	font-size:0.85em;
 }
 
+input[type="date"]{
+	width:209px;
+}
+
 input#id_height1:after{
 	content:' Downlaod';
+}
+
+label[for=id_height2]{
+	opacity: 0;
+}
+
+.message{
+	text-align: center;
+}
+
+
+
+/* Diet Entry */
+section#results {
+	display: flex;
+	flex-wrap: wrap;
+	border-left: 3px solid #663000;
+	width:100.8%;
+}
+
+.Diet-Entry{
+    display: block;
+    width: 22.5%;
+	background: rgba(170, 80, 0, 0.6);
+	color: white;
+	padding: 1%;
+	margin: 0;
+	border-bottom: 3px solid #663000;
+    border-right: 3px solid #663000;
+}
+
+.Diet-Entry:nth-child(1), .Diet-Entry:nth-child(2), .Diet-Entry:nth-child(3), .Diet-Entry:nth-child(4){	
+	border-top: 3px solid #663000;
+}
+
+.Diet-Sub-Entry{
+	padding:10px 0;
+}
+
+.Diet-Final-Tally{
+	font-weight: bold;
 }

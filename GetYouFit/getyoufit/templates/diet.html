@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Latoe&display=swap" rel="stylesheet">
+	
+    {% load static %}
+
+    <style>
+        #login-form > p{
+            display:inline !important;
+        }
+    </style>
+
+	<link href="{% static 'css/main.css' %}" rel="stylesheet">
+	<script type="text/javascript" src="{% static 'scripts/init.js' %}"></script>
+</head>
+<body id="body">
+	{% include "nav.html" %}
+	<div class="main">
+		{% include "header.html" %}
+        <h2>View Diet Entries</h2>
+        <br />
+        <p class="message"><a href="{% url 'create_diet' %}">(Create new diet entry)</a></p>
+        <form id="login-form" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="submit-button" id="login-button" type="submit" value="Search" />
+        </form>
+        <section id="results">
+            {{ entries | safe }}
+        </section>
+        <br />
+        {{ total | safe}}
+	</div>
+</body>
+</html>
