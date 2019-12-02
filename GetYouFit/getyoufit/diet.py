@@ -33,7 +33,6 @@ def retrieveDietEntries(info, username, index):
 
 		cursor = conn.cursor()
 	
-		print("All status:", info['showAll'])
 		if not index:
 			print("no2-------------------------------------")
 			if info['showAll']:
