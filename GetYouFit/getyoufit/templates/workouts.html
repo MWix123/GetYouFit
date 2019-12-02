@@ -15,7 +15,7 @@
 	<link href="{% static 'css/main.css' %}" rel="stylesheet">
 	<script type="text/javascript" src="{% static 'scripts/init.js' %}"></script>
 </head>
-<body id="body">
+<body id="body" onload="initWorkoutEntries();">
 	{% include "nav.html" %}
 	<div class="main">
 		{% include "header.html" %}
@@ -27,11 +27,23 @@
             {{ form.as_p }}
             <input class="submit-button" id="login-button" type="submit" value="Search" />
         </form>
+        {{ message | safe }}
         <section id="results">
-            {{ entries | safe }}
+                {{ entries | safe }}
         </section>
         <br />
         {{ total | safe}}
+
+        <div class="hidden">
+                <form method = "POST" id="edit-form">
+                    {% csrf_token %}
+                    {{ editForm.as_p }} 
+                </form>
+                <form method = "POST" id="delete-form">
+                    {% csrf_token %}
+                    {{ deleteForm.as_p }}
+                </form>
+            </div>
 	</div>
 </body>
 </html>

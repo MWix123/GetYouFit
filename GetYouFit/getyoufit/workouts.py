@@ -28,30 +28,29 @@ def retrieveWorkoutEntries(info, username):
 		rows = cursor.fetchall()
 		
 		prevDate = rows[0][0]
-		print(prevDate)
-		message = "<div class='Diet-Entry'><h3>Date: " + prevDate.strftime("%m/%d/%Y") + "</h3>"
-		print("after")
+		
+		message = "<div class='Diet-Entry'><div class='close-button'>X</div><h3>Date: " + prevDate.strftime("%m/%d/%Y") + "</h3>"
 		dayTotal = 0
 		overallTotal = 0
 		for row in rows:
 			print(row)
 			currentDate = row[0]
 			if prevDate != currentDate:
-				message += "<p class='Diet-Final-Tally'>Total calories: " + str(dayTotal)+ "</p></div><div class='Diet-Entry'><h3>Date: " + currentDate.strftime("%m/%d/%Y") + "</h3>"
+				message += "<p class='Diet-Final-Tally'>Total calories: " + str(dayTotal)+ "</p></div><div class='Diet-Entry'><div class='close-button'>X</div><h3>Date: " + currentDate.strftime("%m/%d/%Y") + "</h3>"
 				overallTotal += dayTotal
 				dayTotal = 0
 				prevDate = currentDate
 			
 			if type(row[2]).__name__ == "int":
-				message += "<div class='Diet-Sub-Entry'><p>Exercise: " + row[3] + "</p><p>Calories burned: " + str(row[4]) + "</p>"
+				message += "<div class='Diet-Sub-Entry'><div class='close-button'>X</div><div class='edit-button'>+</div><p>Exercise: <span class='editable'>" + row[3] + "</span></p><p>Calories burned: <span class='editable'>" + str(row[4]) + "</span></p>"
 				dayTotal += row[4]
 
 				print(row[7],":",type(row[7]).__name__)
 				if type(row[7]).__name__ == "int":
-					message += "<p>Muscle: " + row[8]+ "</p><p>Weight: " + str(row[9])+ "</p><p>Repetitions: " + str(row[10]) + "</p>"
+					message += "<p>Muscle: <span class='editable'>" + row[8]+ "</span></p><p>Weight: <span class='editable'>" + str(row[9])+ "</span></p><p>Repetitions: <span class='editable'>" + str(row[10]) + "</span></p><p class='hidden'>" + str(row[7]) + "</p>"
 				else:
 					print(row[12])
-					message += "<p>Duration: " + row[12].strftime('%H:%M:%S')+ "</p><p>Distance: " + str(row[13]) + "</p>"
+					message += "<p>Duration: <span class='editable'>" + row[12].strftime('%H:%M:%S')+ "</span></p><p>Distance: <span class='editable'>" + str(row[13]) + "</span></p><p class='hidden'>" + str(row[11]) + "</p>"
 
 				message += "</div>"
 		
@@ -99,5 +98,69 @@ def createWorkoutEntry(info, username):
 	except Exception as ex:
 		print("Not connected: ", ex)
 		print("Not connected: " + type(ex).__name__)
+
+	return message
+
+def editWorkoutEntry(info, username):
+	
+	message = "<p>No entries found</p>"
+
+	try:
+		conn = psycopg2.connect(database=dbName, password = dbPassword, user=dbUser, host=dbHost)
+
+		cursor = conn.cursor()
+
+		print("exercise id:", info['exerciseId'], "username:",username,"date:", info['date'])
+
+		cursor.execute("UPDATE WorkoutEntry SET exercisename = %s, caloriesburned = %s WHERE WorkoutEntry.username = %s AND WorkoutEntry.logdate = %s AND WorkoutEntry.exerciseid = %s", (info['exerciseName'], info['calories'], username, info['date'], info['exerciseId']))
+		
+		if info['typeForm'] == 'Strength':
+			cursor.execute("UPDATE StrengthExercise SET muscle = %s, weight = %s, repetitions = %s WHERE StrengthExercise.exerciseid = %s", (info['muscle'], info['weight'], info['repetitions'], info['exerciseId']))
+		else:
+			cursor.execute("UPDATE RunningExercise SET duration = %s, distance = %s WHERE RunningExercise.exerciseid = %s", (info['duration'], info['distance'], info['exerciseId']))
+			
+
+		conn.commit()
+		message = "<p class='message'>Entry successfully updated</p>"
+
+	except Exception as ex:
+		print("Not connected: ", ex)
+		print("Not connected: " + type(ex).__name__)
+		message = "<p>No entries found</p>"
+
+
+	return message
+
+def deleteWorkoutEntry(info, username):
+	
+	message = "<p>No entries found</p>"
+
+	try:
+		conn = psycopg2.connect(database=dbName, password = dbPassword, user=dbUser, host=dbHost)
+
+		cursor = conn.cursor()
+		
+		print("exercise id:", info['exerciseId'])
+		
+		if info['single'] == "day":
+			print("u:",username)
+			cursor.execute("DELETE FROM WorkoutEntry WHERE WorkoutEntry.username = %s AND WorkoutEntry.logdate = %s", (username, info['date']))
+		else:
+			cursor.execute("DELETE FROM WorkoutEntry WHERE WorkoutEntry.username = %s AND WorkoutEntry.logdate = %s AND WorkoutEntry.exerciseid = %s", (username, info['date'], str(info['exerciseId'])))
+
+		if info['exerciseId'] != 0:
+			print("Shouold not be here")
+			cursor.execute("DELETE FROM StrengthExercise WHERE StrengthExercise.exerciseid = %s", (str(info['exerciseId'])))
+			cursor.execute("DELETE FROM RunningExercise WHERE RunningExercise.exerciseid = %s", (str(info['exerciseId'])))
+			
+
+		conn.commit()
+		message = "<p class='message'>Entry successfully updated</p>"
+
+	except Exception as ex:
+		print("Not connected: ", ex)
+		print("Not connected: " + type(ex).__name__)
+		message = "<p>No entries found</p>"
+
 
 	return message

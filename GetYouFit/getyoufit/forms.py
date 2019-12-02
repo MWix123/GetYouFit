@@ -79,3 +79,34 @@ class WorkoutForm(forms.Form):
 	# running only
 	duration = forms.CharField(label="Duration:", max_length=20,help_text=" hh:mm:ss",required=False)
 	distance = forms.FloatField(label="Distance:",help_text=" in miles", required=False)
+
+class EditWorkoutForm(forms.Form):
+	date = forms.DateField(label="Date:", widget=DateInput)
+	exerciseName = forms.CharField(label="Name of exercise:", max_length=100)
+	calories = forms.IntegerField(label="Calories burned:")
+	typeForm = forms.ChoiceField(label="Type of exercise", choices=[('Strength', 'Strength'),('Running','Running')],widget=forms.RadioSelect, initial="Strength")
+
+	# strength only
+	muscle = forms.CharField(label="Muscle(s) used:", max_length=50, required=False)
+	weight = forms.IntegerField(label="Weight:", help_text="lb", required=False)
+	repetitions = forms.IntegerField(label="Number of repetitions:", required=False)
+	
+	# running only
+	duration = forms.CharField(label="Duration:", max_length=20,help_text=" hh:mm:ss",required=False)
+	distance = forms.FloatField(label="Distance:",help_text=" in miles", required=False)
+	
+	# old fields
+	oldExerciseName = forms.CharField(label="Name of exercise:", max_length=100, widget=TextInput(attrs={"id":"id_exerciseName2"}))
+	oldCalories = forms.IntegerField(label="Calories burned:", widget=NumberInput(attrs={"id":"id_calories2"}))
+
+	exerciseId = forms.IntegerField(label="Exercise id:", widget=NumberInput(attrs={"id":"id_exerciseid2"}),required=False)
+	
+
+class DeleteWorkoutForm(forms.Form):
+	date = forms.DateField(label="Date:", widget=DateInput(attrs={"id":"id_date3"}))
+	
+	exerciseName = forms.CharField(label="Name of exercise:", max_length=100, widget=TextInput(attrs={"id":"id_exerciseName3"}))
+	calories = forms.IntegerField(label="Calories burned:", widget=NumberInput(attrs={"id":"id_calories3"}))
+	exerciseId = forms.IntegerField(label="Exercise id:", widget=NumberInput(attrs={"id":"id_exerciseid3"}),required=False)
+
+	single = forms.ChoiceField(choices=[('single','single'),('day','day')], widget=forms.RadioSelect, initial='single')

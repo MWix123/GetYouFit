@@ -131,17 +131,30 @@ def workouts(request):
 	
 	entries = ""
 	total = ""
+	message = ""
 
 	if request.method == "POST":
 		form = DateForm(request.POST)
+		editForm = EditWorkoutForm(request.POST)
+		deleteForm = DeleteWorkoutForm(request.POST)
+		
+		if deleteForm.is_valid():
+			print("delete form:",deleteForm.cleaned_data)
+			message = deleteWorkoutEntry(deleteForm.cleaned_data, request.user.username)			
+		if editForm.is_valid():
+			print("edit form:", editForm.cleaned_data)
+			message = editWorkoutEntry(editForm.cleaned_data, request.user.username)
+
 		if form.is_valid():
 			result = retrieveWorkoutEntries(form.cleaned_data, request.user.username)			
 			entries = result[0]
 			total= result[1]
 	else:
 		form = DateForm()
+		editForm = EditWorkoutForm()
+		deleteForm = DeleteWorkoutForm()
 	
-	return render(request, "workouts.html", {"form": form, "entries": entries, "total": total})
+	return render(request, "workouts.html", {"form": form, "editForm":editForm, "deleteForm":deleteForm, "entries": entries, "total": total, "message": message})
 
 @login_required
 def create_workout(request):

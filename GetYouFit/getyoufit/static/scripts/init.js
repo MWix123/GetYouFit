@@ -3,6 +3,15 @@ prevFood = "";
 prevCalorie = "";
 entryDate = "";
 
+prevExercise = "";
+prevMuscle = "";
+prevWeight = "";
+prevRepetitions = "";
+prevDuration = "";
+prevDistance = "";
+
+exerciseId = "";
+
 function init(){
 
 	if(document.getElementById('id_typeForm_0').checked){
@@ -131,7 +140,7 @@ function initEntries(){
 
 	for(var i = 0; i < editButtons.length; i++){
 		editButtons[i].addEventListener("click", function(event){
-			clearAllEditable();
+			clearAllEditable("diet");
 
 			makeEditable(this.parentNode.children[2].children[0]);
 			makeEditable(this.parentNode.children[3].children[0]);
@@ -174,23 +183,143 @@ function initEntries(){
 	//document.querySelectorAll("[id='id_calories']")[1].id = "id_calories2";
 }
 
+
+function initWorkoutEntries(){
+	var closeButtons = document.getElementsByClassName('close-button');
+	var editButtons = document.getElementsByClassName('edit-button');
+
+	for(var i = 0; i < closeButtons.length; i++){
+		closeButtons[i].addEventListener("click", function(event){
+			if(this.parentNode.className == "Diet-Entry"){
+				document.getElementById('id_single_1').checked = "true";
+
+				entryDate = this.parentNode.children[1].innerHTML;
+				entryDate = entryDate.substring(12, 16) + "-" 
+							+ entryDate.substring(6, 8) + "-" 
+							+ entryDate.substring(9, 11);
+				
+				document.getElementById("id_date3").value = entryDate;
+				document.getElementById("id_exerciseName3").value = "a";
+				document.getElementById("id_calories3").value = 0;			
+				document.getElementById("id_exerciseid3").value = 0;			
+
+				document.getElementById("delete-form").submit();
+			}else if(this.parentNode.className == "Diet-Sub-Entry"){
+				document.getElementById('id_single_0').checked = "true";
+
+				entryDate = this.parentNode.parentNode.children[1].innerHTML;
+				entryDate = entryDate.substring(12, 16) + "-" 
+							+ entryDate.substring(6, 8) + "-" 
+							+ entryDate.substring(9, 11);
+				
+				document.getElementById('id_date3').value = entryDate;
+				console.log(this.parentNode.children[2].children[0].textContent);
+				document.getElementById('id_exerciseName3').value = this.parentNode.children[2].children[0].textContent;
+				document.getElementById('id_calories3').value = this.parentNode.children[3].children[0].innerHTML;
+				document.getElementById("id_exerciseid3").value = this.parentNode.children[this.parentNode.children.length - 1].innerHTML;
+				
+
+				document.getElementById("delete-form").submit();
+				//alert("Delet item");
+			}
+		});
+	}
+
+	for(var i = 0; i < editButtons.length; i++){
+		editButtons[i].addEventListener("click", function(event){
+			console.log("start");
+			clearAllEditable("strength");
+
+			makeEditable(this.parentNode.children[2].children[0]);
+			makeEditable(this.parentNode.children[3].children[0]);
+			makeEditable(this.parentNode.children[4].children[0]);
+			makeEditable(this.parentNode.children[5].children[0]);
+
+			if(this.parentNode.children.length > 7){
+				makeEditable(this.parentNode.children[6].children[0]);
+			}
+
+			entryDate = this.parentNode.parentNode.children[1].innerHTML;
+			entryDate = entryDate.substring(12, 16) + "-" 
+						+ entryDate.substring(6, 8) + "-" 
+						+ entryDate.substring(9, 11);
+						
+			//console.log(this.parentNode.children[this.parentNode.children.length-1]);
+			prevExercise = this.parentNode.children[2].children[0].innerHTML;
+			prevCalorie = this.parentNode.children[3].children[0].innerHTML;
+			exerciseId = this.parentNode.children[this.parentNode.children.length-1].innerHTML;
+			
+			if(!editButtonActive){
+				var mainElem = document.getElementsByClassName('main');
+				var newButton = document.createElement("input");
+				newButton.setAttribute("type", "button");
+				newButton.setAttribute("value", "Update");
+				newButton.id = "edit-submit";
+				newButton.addEventListener("click", function(event){
+					document.getElementById("id_date").value = entryDate;
+					document.getElementById("id_exerciseName").value = document.getElementsByClassName("focused")[0].innerHTML;
+					document.getElementById("id_calories").value = document.getElementsByClassName("focused")[1].innerHTML;
+				
+					console.log(document.getElementsByClassName("focused")[0].parentNode.parentNode.children.length);
+					if(document.getElementsByClassName("focused")[0].parentNode.parentNode.children.length > 7){
+						document.getElementById('id_typeForm_0').checked = "true";
+						document.getElementById("id_muscle").value = document.getElementsByClassName("focused")[2].innerHTML;
+						document.getElementById("id_weight").value = document.getElementsByClassName("focused")[3].innerHTML;
+						document.getElementById("id_repetitions").value = document.getElementsByClassName("focused")[4].innerHTML;
+					}else{
+						document.getElementById('id_typeForm_1').checked = "true";
+						document.getElementById("id_duration").value = document.getElementsByClassName("focused")[2].innerHTML;
+						document.getElementById("id_distance").value = document.getElementsByClassName("focused")[3].innerHTML;
+					}
+
+					document.getElementById("id_exerciseName2").value = prevExercise;
+					document.getElementById("id_calories2").value = prevCalorie;
+					document.getElementById("id_exerciseid2").value = exerciseId;
+					
+					document.getElementById("edit-form").submit();
+				});
+				mainElem[0].appendChild(newButton);
+				
+				editButtonActive = true;
+			}
+		});
+	}
+
+}
+
 function makeEditable(elem){
 	elem.contentEditable = "true";
 	elem.className = "editable focused";	
 }
 
-function clearAllEditable(){
+function clearAllEditable(type){
 	var editables = document.getElementsByClassName('editable');
 	var counter = 0;
 	for(var i = 0; i < editables.length; i++){
 		if(editables[i].className == "editable focused"){
-			if(counter == 0){
-				editables[i].innerHTML = prevFood;
+			if(type == "diet"){
+				if(counter == 0){
+					editables[i].innerHTML = prevFood;
+				}else{
+					editables[i].innerHTML = prevCalorie;
+				}
 			}else{
-				editables[i].innerHTML = prevCalorie;
+				if(counter == 0){
+					console.log("here clear all");
+					editables[i].innerHTML = prevExercise;
+				}else if(counter == 1){
+					editables[i].innerHTML = prevCalorie;
+				}
+
+				if(type == "strength"){
+					if(counter == 2){
+						//editables[i].innerHTML = prevCalorie;
+					}
+				}else{
+
+				}
 			}
 			counter++;
-
 		}
 		editables[i].className = "editable";
 		editables[i].contentEditable = "false";
