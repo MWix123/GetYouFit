@@ -14,8 +14,17 @@ def retrieveDietEntries(info, username):
 	total = ""
 	
 	print("heyad")
-	if startDate.year > endDate.year or (startDate.year == endDate.year and startDate.month > endDate.month) or (startDate.year == endDate.year and startDate.month == endDate.month and startDate.day > endDate.day):
-		return "<p class='message'>Error: the start date must be before the end date</p>"
+
+
+
+	if not info['showAll']:
+		if type(startDate).__name__ == "NoneType":
+			return ["<p class='message'>Error: missing start date</p>", ""]
+	
+		if type(endDate).__name__ == "NoneType":
+			return ["<p class='message'>Error: missing end date</p>", ""]
+		if startDate.year > endDate.year or (startDate.year == endDate.year and startDate.month > endDate.month) or (startDate.year == endDate.year and startDate.month == endDate.month and startDate.day > endDate.day):
+			return ["<p class='message'>Error: the start date must be before the end date</p>", ""]
 
 
 	try:
@@ -23,7 +32,12 @@ def retrieveDietEntries(info, username):
 
 		cursor = conn.cursor()
 	
-		cursor.execute("SELECT * FROM LogEntry INNER JOIN DietEntry ON LogEntry.logdate = DietEntry.logdate WHERE LogEntry.username = %s AND DietEntry.username = %s AND LogEntry.logdate BETWEEN %s AND %s ORDER BY LogEntry.logdate", (username, username, info['startDate'].strftime('%Y-%m-%d'), info['endDate'].strftime('%Y-%m-%d')))
+		print("All status:", info['showAll'])
+		if info['showAll']:
+			cursor.execute("SELECT * FROM LogEntry INNER JOIN DietEntry ON LogEntry.logdate = DietEntry.logdate WHERE LogEntry.username = %s AND DietEntry.username = %s ORDER BY LogEntry.logdate", (username, username))
+		else:
+			cursor.execute("SELECT * FROM LogEntry INNER JOIN DietEntry ON LogEntry.logdate = DietEntry.logdate WHERE LogEntry.username = %s AND DietEntry.username = %s AND LogEntry.logdate BETWEEN %s AND %s ORDER BY LogEntry.logdate", (username, username, info['startDate'].strftime('%Y-%m-%d'), info['endDate'].strftime('%Y-%m-%d')))
+		
 		rows = cursor.fetchall()
 		print(info['startDate'])
 		print(cursor.rowcount)

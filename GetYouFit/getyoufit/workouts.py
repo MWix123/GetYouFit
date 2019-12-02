@@ -12,9 +12,16 @@ def retrieveWorkoutEntries(info, username):
 	
 	message = "<p>No entries found</p>"
 	total = ""
+	
 
-	if startDate.year > endDate.year or (startDate.year == endDate.year and startDate.month > endDate.month) or (startDate.year == endDate.year and startDate.month == endDate.month and startDate.day > endDate.day):
-		return "<p class='message'>Error: the start date must be before the end date</p>"
+	if not info['showAll']:
+		if type(startDate).__name__ == "NoneType":
+			return ["<p class='message'>Error: missing start date</p>", ""]
+	
+		if type(endDate).__name__ == "NoneType":
+			return ["<p class='message'>Error: missing end date</p>", ""]
+		if startDate.year > endDate.year or (startDate.year == endDate.year and startDate.month > endDate.month) or (startDate.year == endDate.year and startDate.month == endDate.month and startDate.day > endDate.day):
+			return "<p class='message'>Error: the start date must be before the end date</p>"
 
 
 	try:
@@ -22,7 +29,10 @@ def retrieveWorkoutEntries(info, username):
 
 		cursor = conn.cursor()
 		
-		cursor.execute("SELECT * FROM LogEntry LEFT JOIN WorkoutEntry ON LogEntry.logdate = WorkoutEntry.logdate LEFT JOIN StrengthExercise ON WorkoutEntry.exerciseid = StrengthExercise.exerciseid LEFT JOIN RunningExercise ON WorkoutEntry.exerciseid = RunningExercise.exerciseid WHERE LogEntry.username = %s AND LogEntry.logdate BETWEEN %s AND %s AND WorkoutEntry.exerciseid IS NOT NULL ORDER BY LogEntry.logdate", (username, info['startDate'].strftime('%Y-%m-%d'), info['endDate'].strftime('%Y-%m-%d')))
+		if info['showAll']:
+			cursor.execute("SELECT * FROM LogEntry LEFT JOIN WorkoutEntry ON LogEntry.logdate = WorkoutEntry.logdate LEFT JOIN StrengthExercise ON WorkoutEntry.exerciseid = StrengthExercise.exerciseid LEFT JOIN RunningExercise ON WorkoutEntry.exerciseid = RunningExercise.exerciseid WHERE LogEntry.username = '" + username + "' AND WorkoutEntry.exerciseid IS NOT NULL ORDER BY LogEntry.logdate")
+		else:
+			cursor.execute("SELECT * FROM LogEntry LEFT JOIN WorkoutEntry ON LogEntry.logdate = WorkoutEntry.logdate LEFT JOIN StrengthExercise ON WorkoutEntry.exerciseid = StrengthExercise.exerciseid LEFT JOIN RunningExercise ON WorkoutEntry.exerciseid = RunningExercise.exerciseid WHERE LogEntry.username = %s AND LogEntry.logdate BETWEEN %s AND %s AND WorkoutEntry.exerciseid IS NOT NULL ORDER BY LogEntry.logdate", (username, info['startDate'].strftime('%Y-%m-%d'), info['endDate'].strftime('%Y-%m-%d')))
 
 
 		rows = cursor.fetchall()

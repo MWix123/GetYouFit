@@ -46,8 +46,9 @@ class TimeInput(forms.TimeInput):
 	input_type = 'time'
 
 class DateForm(forms.Form):
-	startDate = forms.DateField(label="Start Date:", widget=DateInput)
-	endDate = forms.DateField(label="End Date:", widget=DateInput)
+	startDate = forms.DateField(label="Start Date:", widget=DateInput, required=False)
+	endDate = forms.DateField(label="End Date:", widget=DateInput, required=False)
+	showAll = forms.BooleanField(label="Show all entries", required=False)
 
 class DietForm(forms.Form):
 	date = forms.DateField(label="Date:", widget=DateInput)
