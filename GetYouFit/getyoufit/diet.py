@@ -15,6 +15,7 @@ def retrieveDietEntries(info, username, index):
 	
 	print("heyad")
 
+	print("index:",index)
 
 	if not index:
 		print("no-------------------------------------")
