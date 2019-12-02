@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Latoe&display=swap" rel="stylesheet">
+	
+    {% load static %}
+
+    <style>
+            #login-form > p{
+                display: flex !important;
+                margin: auto;
+                text-align: right;
+                width: 35% !important;
+                color: #aa5000;
+                padding: 5px 0;
+                justify-content: space-between;
+                position:relative;
+            }
+
+            #id_typeForm, #id_typeForm li{
+                display:inline !important;
+                color: #aa5000;
+                font-weight: normal;
+                padding: 0 10px;
+            }
+
+            span.helptext {
+                position: absolute;
+                right: -5em;
+            }
+        </style>
+
+	<link href="{% static 'css/main.css' %}" rel="stylesheet">
+	<script type="text/javascript" src="{% static 'scripts/init.js' %}"></script>
+</head>
+<body id="body" onload="init()">
+	{% include "nav.html" %}
+	<div class="main">
+		{% include "header.html" %}
+        <h2>Create New Workout Entry</h2>
+        <br />
+        <p class="message"><a href="{% url 'workouts' %}">(View all workout entries)</a></p>
+        <form id="login-form" method="POST" autocomplete="off">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="submit-button" id="login-button" type="submit" onclick="return validate();" value="Submit" />
+            <p id="login-error-message"></p>
+        </form>
+        <p class="message">{{ message }}</p>
+	</div>
+</body>
+</html>

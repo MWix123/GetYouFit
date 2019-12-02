@@ -14,10 +14,8 @@
 	<div class="main">
 		{% include "header.html" %}
 		<h2>Welcome back {{ user.username }}!</h2>
-		<div id="dashboard">
-			<br />
-			<br />
-			<br />
+		<div id="dashboard">	
+				{{ entries | safe }}
 		</div>
 	</div>
 </body>

@@ -53,11 +53,22 @@ nav a:hover{
 	border:6px solid #aa5000;
 }
 
-.main h2{
+.main h2, .main h3, .main h4{
 	text-align: center;
-	color: #aa5000;
+}
+
+.main h2{
     font-weight: bold;
     font-size: 2em;
+	color: #aa5000;
+}
+
+.main h3{
+	font-size: 1.8em;
+}
+
+.main h4{
+	font-size: 1.5em;
 }
 
 .main a{
@@ -98,7 +109,7 @@ header h1{
 	padding:10px 0;
 }
 
-#login-button{
+#login-button, #edit-submit{
 	display: block;
     margin: 30px auto;
     background-color: #aa5000;
@@ -108,14 +119,14 @@ header h1{
     border: 3px solid #663000;
 }
 
-#login-button:hover{
+#login-button:hover, #edit-submit:hover{
 	background-color: #853e00;
 	color:yellow;
 	cursor:pointer;
 	transition: 0.2s linear color, 0.2s linear background;
 }
 
-#login-button:active{
+#login-button:active, #edit-submit:active{
 	background-color: #ffad66;
 	transition: none;
 }
@@ -161,7 +172,7 @@ header h1{
 
 #login-error-message{
 	display:block !important;
-	color:red;
+	color:red !important;
 }
 
 span.helptext{
@@ -192,11 +203,20 @@ label[for=id_height2]{
 
 
 /* Diet Entry */
-section#results {
+section#results, section#diet-results, section#workout-results {
 	display: flex;
 	flex-wrap: wrap;
 	border-left: 3px solid #663000;
 	width:100.8%;
+}
+
+section#diet-results, section#workout-results {
+	justify-content: center;
+	border: none;
+}
+
+section#diet-results > .Diet-Entry, section#workout-results > .Diet-Entry {
+	border: 3px solid #663000;
 }
 
 .Diet-Entry{
@@ -207,7 +227,39 @@ section#results {
 	padding: 1%;
 	margin: 0;
 	border-bottom: 3px solid #663000;
-    border-right: 3px solid #663000;
+	border-right: 3px solid #663000;	
+	position:relative;
+}
+
+.close-button{
+	position:absolute;
+	background: red;
+	display:block;
+	width:25px;
+	height:25px;
+	right:0;
+	top:0;
+    text-align: center;
+	padding: 7px 5px 0 5px;
+	opacity:0.3;
+}
+
+.close-button:hover, .edit-button:hover{
+	opacity: 1;
+	cursor: pointer;
+}
+
+.edit-button{
+	position:absolute;
+	background: blue;
+	display:block;
+	width:25px;
+	height:25px;
+	left:0;
+	top:0;
+    text-align: center;
+	padding: 7px 5px 0 5px;
+	opacity:0.3;
 }
 
 .Diet-Entry:nth-child(1), .Diet-Entry:nth-child(2), .Diet-Entry:nth-child(3), .Diet-Entry:nth-child(4){	
@@ -216,8 +268,28 @@ section#results {
 
 .Diet-Sub-Entry{
 	padding:10px 0;
+	position:relative;
+}
+
+.Diet-Sub-Entry > .edit-button{
+	right:35px;
+	left: auto;
 }
 
 .Diet-Final-Tally{
 	font-weight: bold;
+}
+
+.hidden{
+	display: none;
+}
+
+.editable{
+	padding: 0px 5px;
+}
+
+.focused{
+	border:2px solid #663000;
+    background: white;
+    color: black;
 }

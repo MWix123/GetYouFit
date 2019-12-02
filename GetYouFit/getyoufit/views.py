@@ -12,11 +12,30 @@ from .forms import *
 from .login import *
 from .user_info import *
 from .diet import *
+from .workouts import *
+
+from datetime import datetime
 
 @login_required
 def index(request):
-	message = ""
-	return render(request, "index.html", {"message": message})
+	entries = ""
+	values = {"username": request.user.username, "startDate":datetime.today(), "endDate":datetime.today()}
+	result = retrieveDietEntries(values, request.user.username)	
+	entries = result[0]
+
+	if len(result[1]) == 0:
+		entries = "<br /><h4>No Diet Entries entered for today</h4><br />"
+	else:
+		entries = "<br /><h4>Diet Entries</h4><br /><section id='diet-results'>" + entries + "</section><br />"
+
+	result = retrieveWorkoutEntries(values, request.user.username)			
+	
+	if len(result[1]) == 0:
+		entries = entries + "<h4>No Workout Entries entered for today</h4>"
+	else:
+		entries = entries + "<h4>Workout Entries</h4><br /><section id='workout-results'>" + result[0] + "</section>"
+
+	return render(request, "index.html", {"entries": entries})
 
 def signup(request):
 	message = ""
@@ -64,18 +83,34 @@ def diet(request):
 	
 	entries = ""
 	total = ""
+	message = ""
 
 	if request.method == "POST":
 		form = DateForm(request.POST)
+		editForm = EditDietForm(request.POST)
+		deleteForm = DeleteDietForm(request.POST)
+
+		if deleteForm.is_valid():
+			print("test3")
+			message = deleteDietEntry(deleteForm.cleaned_data, request.user.username)
+
+		if editForm.is_valid():
+			print("test 2")
+			print("Edit form:",editForm.cleaned_data)
+			message = updateDietEntry(editForm.cleaned_data, request.user.username)
+		
 		if form.is_valid():
-			print("-----------------",form.cleaned_data['startDate'].year)
+			print("test 1")
 			result = retrieveDietEntries(form.cleaned_data, request.user.username)			
 			entries = result[0]
 			total= result[1]
+
 	else:
 		form = DateForm()
-	
-	return render(request, "diet.html", {"form": form, "entries": entries, "total": total})
+		editForm = EditDietForm()
+		deleteForm = DeleteDietForm()
+
+	return render(request, "diet.html", {"form": form, "editForm":editForm, "deleteForm":deleteForm, "entries": entries, "total": total, "message": message})
 
 @login_required
 def create_diet(request):
@@ -85,9 +120,39 @@ def create_diet(request):
 	if request.method == "POST":
 		form = DietForm(request.POST)
 		if form.is_valid():
-			print("validaidsid")
 			message = createDietEntry(form.cleaned_data, request.user.username)
 	else:
 		form = DietForm()
 	
 	return render(request, "create-diet-entry.html", {"form": form, "message": message})
+
+@login_required
+def workouts(request):
+	
+	entries = ""
+	total = ""
+
+	if request.method == "POST":
+		form = DateForm(request.POST)
+		if form.is_valid():
+			result = retrieveWorkoutEntries(form.cleaned_data, request.user.username)			
+			entries = result[0]
+			total= result[1]
+	else:
+		form = DateForm()
+	
+	return render(request, "workouts.html", {"form": form, "entries": entries, "total": total})
+
+@login_required
+def create_workout(request):
+	
+	message =""
+
+	if request.method == "POST":
+		form = WorkoutForm(request.POST)
+		if form.is_valid():
+			message = createWorkoutEntry(form.cleaned_data, request.user.username)
+	else:
+		form = WorkoutForm()
+	
+	return render(request, "create-workout-entry.html", {"form": form, "message": message})

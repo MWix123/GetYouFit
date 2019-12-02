@@ -34,6 +34,15 @@ class UserProfileForm(forms.ModelForm):
 class DateInput(forms.DateInput):
 	input_type = 'date'
 
+class TextInput(forms.TextInput):
+	input_type = 'text'
+
+class NumberInput(forms.NumberInput):
+	input_type = 'number'
+
+class TimeInput(forms.TimeInput):
+	input_type = 'time'
+
 class DateForm(forms.Form):
 	startDate = forms.DateField(label="Start Date:", widget=DateInput)
 	endDate = forms.DateField(label="End Date:", widget=DateInput)
@@ -42,3 +51,31 @@ class DietForm(forms.Form):
 	date = forms.DateField(label="Date:", widget=DateInput)
 	food = forms.CharField(label="Name of food:", max_length=100)
 	calories = forms.IntegerField(label="Calories:")
+
+class EditDietForm(forms.Form):
+	date = forms.DateField(label="Date:", widget=DateInput)
+	food = forms.CharField(label="Name of food:", max_length=100)
+	calories = forms.IntegerField(label="Calories:")
+	oldFood = forms.CharField(label="Name of food:", max_length=100, widget=TextInput(attrs={'id':'id_food2'}))
+	oldCalories = forms.IntegerField(label="Calories:", widget=NumberInput(attrs={'id':'id_calories2'}))
+
+class DeleteDietForm(forms.Form):
+	date = forms.DateField(label="Date:", widget=DateInput(attrs={'id':'id_date3'}))
+	food = forms.CharField(label="Name of food:", max_length=100, widget=TextInput(attrs={'id':'id_food3'}))
+	calories = forms.IntegerField(label="Calories:", widget=NumberInput(attrs={'id':'id_calories3'}))
+	single = forms.ChoiceField(choices=[('single','single'),('day','day')], widget=forms.RadioSelect, initial='single')
+
+class WorkoutForm(forms.Form):
+	date = forms.DateField(label="Date:", widget=DateInput)
+	exerciseName = forms.CharField(label="Name of exercise:", max_length=100)
+	calories = forms.IntegerField(label="Calories burned:")
+	typeForm = forms.ChoiceField(label="Type of exercise", choices=[('Strength', 'Strength'),('Running','Running')],widget=forms.RadioSelect, initial="Strength")
+
+	# strength only
+	muscle = forms.CharField(label="Muscle(s) used:", max_length=50, required=False)
+	weight = forms.IntegerField(label="Weight:", help_text="lb", required=False)
+	repetitions = forms.IntegerField(label="Number of repetitions:", required=False)
+	
+	# running only
+	duration = forms.CharField(label="Duration:", max_length=20,help_text=" hh:mm:ss",required=False)
+	distance = forms.FloatField(label="Distance:",help_text=" in miles", required=False)

@@ -10,45 +10,28 @@
         #login-form > p{
             display:inline !important;
         }
-
-        .errorlist{
-            display: none;
-        }
     </style>
 
 	<link href="{% static 'css/main.css' %}" rel="stylesheet">
 	<script type="text/javascript" src="{% static 'scripts/init.js' %}"></script>
 </head>
-<body id="body" onload="initEntries();">
+<body id="body">
 	{% include "nav.html" %}
 	<div class="main">
 		{% include "header.html" %}
-        <h2>View and Edit Diet Entries</h2>
+        <h2>View Workout Entries</h2>
         <br />
-        <p class="message"><a href="{% url 'create_diet' %}">(Create new diet entry)</a></p>
+        <p class="message"><a href="{% url 'create_workout' %}">(Create new workout entry)</a></p>
         <form id="login-form" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
             <input class="submit-button" id="login-button" type="submit" value="Search" />
         </form>
-        {{ message | safe }}
         <section id="results">
             {{ entries | safe }}
         </section>
         <br />
         {{ total | safe}}
-        
-
-        <div class="hidden">
-            <form method = "POST" id="edit-form">
-                {% csrf_token %}
-                {{ editForm.as_p }} 
-            </form>
-            <form method = "POST" id="delete-form">
-                {% csrf_token %}
-                {{ deleteForm.as_p }}
-            </form>
-        </div>
 	</div>
 </body>
 </html>
