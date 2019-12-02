@@ -23,7 +23,7 @@ def index(request):
 	
 
 	values = {"username": request.user.username, "startDate":datetime.today(), "endDate":datetime.today()}
-	result = retrieveDietEntries(values, request.user.username)	
+	result = retrieveDietEntries(values, request.user.username, True)
 	entries = result[0]
 	
 
@@ -32,7 +32,7 @@ def index(request):
 	else:
 		entries = "<br /><h4>Diet Entries</h4><br /><section id='diet-results'>" + entries + "</section><br />"
 
-	result = retrieveWorkoutEntries(values, request.user.username)			
+	result = retrieveWorkoutEntries(values, request.user.username, True)
 	
 	if len(result[1]) == 0:
 		entries = entries + "<h4>No Workout Entries entered for today</h4>"
@@ -108,7 +108,7 @@ def diet(request):
 		
 		if form.is_valid():
 			print("test 1")
-			result = retrieveDietEntries(form.cleaned_data, request.user.username)			
+			result = retrieveDietEntries(form.cleaned_data, request.user.username, False)
 			entries = result[0]
 			total= result[1]
 
@@ -153,7 +153,7 @@ def workouts(request):
 			message = editWorkoutEntry(editForm.cleaned_data, request.user.username)
 
 		if form.is_valid():
-			result = retrieveWorkoutEntries(form.cleaned_data, request.user.username)			
+			result = retrieveWorkoutEntries(form.cleaned_data, request.user.username, False)	
 			entries = result[0]
 			total= result[1]
 	else:

@@ -6,7 +6,7 @@ dbHost = "ec2-54-225-173-42.compute-1.amazonaws.com"
 dbUser = "asfmhdygmsibfb"
 dbPassword = "d57768a0ac5b6f7313d2173a9b8179443465c3515448f2b6b11d806a7a11047b"
 
-def retrieveWorkoutEntries(info, username):
+def retrieveWorkoutEntries(info, username, index):
 	startDate = info['startDate']
 	endDate = info['endDate']
 	
@@ -14,14 +14,15 @@ def retrieveWorkoutEntries(info, username):
 	total = ""
 	
 
-	if not info['showAll']:
-		if type(startDate).__name__ == "NoneType":
-			return ["<p class='message'>Error: missing start date</p>", ""]
+	if not index:
+		if not info['showAll']:
+			if type(startDate).__name__ == "NoneType":
+				return ["<p class='message'>Error: missing start date</p>", ""]
 	
-		if type(endDate).__name__ == "NoneType":
-			return ["<p class='message'>Error: missing end date</p>", ""]
-		if startDate.year > endDate.year or (startDate.year == endDate.year and startDate.month > endDate.month) or (startDate.year == endDate.year and startDate.month == endDate.month and startDate.day > endDate.day):
-			return "<p class='message'>Error: the start date must be before the end date</p>"
+			if type(endDate).__name__ == "NoneType":
+				return ["<p class='message'>Error: missing end date</p>", ""]
+			if startDate.year > endDate.year or (startDate.year == endDate.year and startDate.month > endDate.month) or (startDate.year == endDate.year and startDate.month == endDate.month and startDate.day > endDate.day):
+				return "<p class='message'>Error: the start date must be before the end date</p>"
 
 
 	try:
@@ -29,8 +30,11 @@ def retrieveWorkoutEntries(info, username):
 
 		cursor = conn.cursor()
 		
-		if info['showAll']:
-			cursor.execute("SELECT * FROM LogEntry LEFT JOIN WorkoutEntry ON LogEntry.logdate = WorkoutEntry.logdate LEFT JOIN StrengthExercise ON WorkoutEntry.exerciseid = StrengthExercise.exerciseid LEFT JOIN RunningExercise ON WorkoutEntry.exerciseid = RunningExercise.exerciseid WHERE LogEntry.username = '" + username + "' AND WorkoutEntry.exerciseid IS NOT NULL ORDER BY LogEntry.logdate")
+		if not index:
+			if info['showAll']:
+				cursor.execute("SELECT * FROM LogEntry LEFT JOIN WorkoutEntry ON LogEntry.logdate = WorkoutEntry.logdate LEFT JOIN StrengthExercise ON WorkoutEntry.exerciseid = StrengthExercise.exerciseid LEFT JOIN RunningExercise ON WorkoutEntry.exerciseid = RunningExercise.exerciseid WHERE LogEntry.username = '" + username + "' AND WorkoutEntry.exerciseid IS NOT NULL ORDER BY LogEntry.logdate")
+			else:
+				cursor.execute("SELECT * FROM LogEntry LEFT JOIN WorkoutEntry ON LogEntry.logdate = WorkoutEntry.logdate LEFT JOIN StrengthExercise ON WorkoutEntry.exerciseid = StrengthExercise.exerciseid LEFT JOIN RunningExercise ON WorkoutEntry.exerciseid = RunningExercise.exerciseid WHERE LogEntry.username = %s AND LogEntry.logdate BETWEEN %s AND %s AND WorkoutEntry.exerciseid IS NOT NULL ORDER BY LogEntry.logdate", (username, info['startDate'].strftime('%Y-%m-%d'), info['endDate'].strftime('%Y-%m-%d')))
 		else:
 			cursor.execute("SELECT * FROM LogEntry LEFT JOIN WorkoutEntry ON LogEntry.logdate = WorkoutEntry.logdate LEFT JOIN StrengthExercise ON WorkoutEntry.exerciseid = StrengthExercise.exerciseid LEFT JOIN RunningExercise ON WorkoutEntry.exerciseid = RunningExercise.exerciseid WHERE LogEntry.username = %s AND LogEntry.logdate BETWEEN %s AND %s AND WorkoutEntry.exerciseid IS NOT NULL ORDER BY LogEntry.logdate", (username, info['startDate'].strftime('%Y-%m-%d'), info['endDate'].strftime('%Y-%m-%d')))
 
