@@ -33,7 +33,7 @@ def get_profile_info(username):
 		
 		if cursor.rowcount == 1:
 			data['skillLevel'] = rows[0][1]
-			data['caloriegoal'] = rows[0][2]
+			data['calorieGoal'] = rows[0][2]
 
 	except Exception as ex:
 		print("Not connected: ", ex)
