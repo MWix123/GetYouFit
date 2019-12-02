@@ -33,7 +33,7 @@ def retrieveWorkoutEntries(info, username):
 		dayTotal = 0
 		overallTotal = 0
 		for row in rows:
-			print(row)
+			print("Row:",row)
 			currentDate = row[0]
 			if prevDate != currentDate:
 				message += "<p class='Diet-Final-Tally'>Total calories: " + str(dayTotal)+ "</p></div><div class='Diet-Entry'><div class='close-button'>X</div><h3>Date: " + currentDate.strftime("%m/%d/%Y") + "</h3>"
@@ -45,11 +45,11 @@ def retrieveWorkoutEntries(info, username):
 				message += "<div class='Diet-Sub-Entry'><div class='close-button'>X</div><div class='edit-button'>+</div><p>Exercise: <span class='editable'>" + row[3] + "</span></p><p>Calories burned: <span class='editable'>" + str(row[4]) + "</span></p>"
 				dayTotal += row[4]
 
-				print(row[7],":",type(row[7]).__name__)
+				print("Row 7:",row[7],":",type(row[7]).__name__)
 				if type(row[7]).__name__ == "int":
 					message += "<p>Muscle: <span class='editable'>" + row[8]+ "</span></p><p>Weight: <span class='editable'>" + str(row[9])+ "</span></p><p>Repetitions: <span class='editable'>" + str(row[10]) + "</span></p><p class='hidden'>" + str(row[7]) + "</p>"
 				else:
-					print(row[12])
+					print("Row 12:",row[12])
 					message += "<p>Duration: <span class='editable'>" + row[12].strftime('%H:%M:%S')+ "</span></p><p>Distance: <span class='editable'>" + str(row[13]) + "</span></p><p class='hidden'>" + str(row[11]) + "</p>"
 
 				message += "</div>"
@@ -84,7 +84,7 @@ def createWorkoutEntry(info, username):
 			cursor.execute("INSERT INTO LogEntry(logdate, username) VALUES(%s, %s)", (info['date'], username))
 		
 		cursor.execute("INSERT INTO WorkoutEntry(exercisename, caloriesburned, logdate, username) VALUES(%s, %s, %s, %s)", (info['exerciseName'], str(info['calories']), info['date'], username))
-		cursor.execute("SELECT * FROM WorkoutEntry WHERE username = %s AND logdate = %s", (username, info['date']))
+		cursor.execute("SELECT * FROM WorkoutEntry WHERE username = %s AND logdate = %s ORDER BY exerciseid DESC", (username, info['date']))
 		exerciseId = cursor.fetchone()[0]
 
 		if info['typeForm'] == 'Strength':
