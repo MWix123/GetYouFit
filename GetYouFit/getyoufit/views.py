@@ -19,9 +19,13 @@ from datetime import datetime
 @login_required
 def index(request):
 	entries = ""
+	calorieMessage = ""
+	
+
 	values = {"username": request.user.username, "startDate":datetime.today(), "endDate":datetime.today()}
 	result = retrieveDietEntries(values, request.user.username)	
 	entries = result[0]
+	
 
 	if len(result[1]) == 0:
 		entries = "<br /><h4>No Diet Entries entered for today</h4><br />"
@@ -35,7 +39,10 @@ def index(request):
 	else:
 		entries = entries + "<h4>Workout Entries</h4><br /><section id='workout-results'>" + result[0] + "</section>"
 
-	return render(request, "index.html", {"entries": entries})
+
+	calorieMessage = retrieveCalorieInfo(request.user.username)
+
+	return render(request, "index.html", {"entries": entries, "calorieMessage":calorieMessage})
 
 def signup(request):
 	message = ""

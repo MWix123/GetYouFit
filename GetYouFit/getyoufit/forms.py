@@ -25,6 +25,8 @@ class UserProfileForm(forms.ModelForm):
 	height2 = forms.IntegerField(label="\t", required=False, help_text="inches")
 	weight = forms.FloatField(required=False, help_text="lb")
 	gender = forms.ChoiceField(label='Gender:', choices=[("M","Male"),("F","Female")], required=False)
+	skillLevel = forms.ChoiceField(label="Skill Level:", choices=[("Beginner","Beginner"),("Intermediate","Intermediate"),("Advanced","Advanced")], required=False)
+	calorieGoal = forms.IntegerField(label="Calorie goal:", required=False)
 
 	class Meta:
 		model = Post

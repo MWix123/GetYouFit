@@ -293,3 +293,22 @@ section#diet-results > .Diet-Entry, section#workout-results > .Diet-Entry {
     background: white;
     color: black;
 }
+
+.calorie-message{
+	display: block;
+    width: fit-content;
+    margin: auto;
+    font-size: 1.2em;
+    line-height: 2;
+    padding: 15px 0;
+}
+
+.good{
+	color:#006400;
+	font-weight: bold;
+}
+
+.bad{
+	color:#d40505;
+	font-weight: bold;
+}

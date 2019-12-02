@@ -14,6 +14,11 @@
 	<div class="main">
 		{% include "header.html" %}
 		<h2>Welcome back {{ user.username }}!</h2>
+		{{ calorieMessage | safe }}
+		<!-- <p>Current calorie goal: {{ goal | safe }}</p>
+		<p>Total calories consumed: {{ totalCaloriesConsumed | safe }}</p>
+		<p>Total calories burned: {{ totalCaloriesBurned | safe }}</p>
+		<p>You are {{ target | safe }} and have {{ status | safe }} your goal</p> -->
 		<div id="dashboard">	
 				{{ entries | safe }}
 		</div>

@@ -61,6 +61,7 @@ def createUser(info):
 		gender = info['gender']
 		
 		cursor.execute("INSERT INTO users(username, pword, age, height, weight, gender) VALUES('" + info['username'] + "', '" + info['password1'] + "', " + str(age) + ", " + str(height) + ", " + str(weight) + ", '" + gender + "')")
+		cursor.execute("INSERT INTO PreferenceList(username) VALUES('" + info['username'] + "')")
 		
 		conn.commit()
 
